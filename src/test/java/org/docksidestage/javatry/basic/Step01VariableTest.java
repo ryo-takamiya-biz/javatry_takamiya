@@ -24,7 +24,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author takamiya
  */
 public class Step01VariableTest extends PlainTestCase {
 
@@ -47,7 +47,9 @@ public class Step01VariableTest extends PlainTestCase {
         String piari = null;
         String dstore = "mai";
         sea = sea + land + piari + ":" + dstore;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => mystic8:mai(☓) => mystic8null:mai(o)
+        // Integer型はstr型に自動でキャストされるかつnullは空文字と同じ扱いという予想
+        // nullは"null"が出力される。printでも"null"が出力される。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -56,7 +58,9 @@ public class Step01VariableTest extends PlainTestCase {
         String land = "oneman";
         sea = land;
         land = land + "'s dreams";
-        log(sea); // your answer? => 
+        log(sea); // your answer? => oneman(o)
+        // sea = land は文字列を上書きしている（参照先の代入ではない）のでlandの中身が変わってもseaにまで反映されないという予想
+        // オブジェクトでは参照渡しらしい
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -65,7 +69,8 @@ public class Step01VariableTest extends PlainTestCase {
         int land = 415;
         sea = land;
         land++;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 415(o)
+        // 先程と同様にsea = landは値を上書きしている（参照先の代入ではない）のでlandの中身が変わってもseaにまで反映されないという予想
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -75,7 +80,9 @@ public class Step01VariableTest extends PlainTestCase {
         sea = land;
         sea = land.add(new BigDecimal(1));
         sea.add(new BigDecimal(1));
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 417(☓) => 416(o)
+        // 多分オブジェクトっぽいので参照渡しになっている予想
+        // 5行目は返り値が+1された状態で返されるだけでsea自体が+1されるわけではなかった
     }
 
     // ===================================================================================
@@ -89,19 +96,22 @@ public class Step01VariableTest extends PlainTestCase {
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_String() {
         String sea = instanceBroadway;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null(o)
+        // まだなにも入っていないのでnull
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
         int sea = instanceDockside;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null(☓) => 0(o)
+        // intの場合には定義後はnullではなく0
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_Integer() {
         Integer sea = instanceHangar;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null(o)
+        // オブジェクト型はnull, Integerはintのラッパーらしい
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -110,7 +120,12 @@ public class Step01VariableTest extends PlainTestCase {
         instanceMagiclamp = "magician";
         helpInstanceVariableViaMethod(instanceMagiclamp);
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => bigband|1|null|magician(o)
+        // instanceBroadway:クラス内変数なのでhelpMethodの中での変更も反映されるのでbigband
+        // instanceDockside:上と同じ理由で1
+        // instanceHangar:特に変わらずnull
+        // instanceMagiclamp:引数で渡したものは関数内の変数となる。helpMethod内では関数内の変数として認識されると思うので
+        // 変わらないという予想でnull
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -130,12 +145,13 @@ public class Step01VariableTest extends PlainTestCase {
         String sea = "harbor";
         int land = 415;
         helpMethodArgumentImmutableMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor(o)
+        // help関数内では関数内変数を変更しているのでtest関数のseaはそのまま
     }
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
         ++land;
-        String landStr = String.valueOf(land); // is "416"
+        String landStr = String.valueOf(land);
         sea.concat(landStr);
     }
 
@@ -147,7 +163,8 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor416(o)
+        // StringBuilderはオブジェクトなので引数でも参照渡しなのでhelp関数内での変更も反映される予想
     }
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
@@ -163,7 +180,8 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentVariable(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor(o)
+        // test関数内で作成されたオブジェクトに対して、help関数内では何もしていないので変わらない
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
@@ -191,8 +209,11 @@ public class Step01VariableTest extends PlainTestCase {
      * o すべての変数をlog()でカンマ区切りの文字列で表示
      * </pre>
      */
+    private int piari;
     public void test_variable_writing() {
-        // define variables here
+        String sea = "mystic";
+        Integer land = null;
+        log(sea + "," + land + "," + piari);
     }
 
     // ===================================================================================
@@ -204,11 +225,18 @@ public class Step01VariableTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     * メソッド終了時の変数 sea の中身は？
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
+    private StringBuilder sea;
     public void test_variable_yourExercise() {
-        // write your code here
+        helpMethod();
+        log(sea);
+        // helpMethod内で作ったオブジェクトではスコープがどうなるのか（残るのか消えるのか）という問題
+    }
+
+    private void helpMethod() {
+        sea = new StringBuilder("abc");
     }
 }
