@@ -61,6 +61,7 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => oneman(o)
         // sea = land は文字列を上書きしている（参照先の代入ではない）のでlandの中身が変わってもseaにまで反映されないという予想
         // オブジェクトでは参照渡しらしい
+        // TODO takamiya [いいね] オブジェクト型の変数は参照(アドレス)を持っているだけなのでGood by jflute (2026/07/27)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -71,6 +72,7 @@ public class Step01VariableTest extends PlainTestCase {
         land++;
         log(sea); // your answer? => 415(o)
         // 先程と同様にsea = landは値を上書きしている（参照先の代入ではない）のでlandの中身が変わってもseaにまで反映されないという予想
+        // TODO takamiya 一方で、プリミティヴ型の変数は、値そのものを持っているイメージでOK by jflute (2026/07/27)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -83,6 +85,8 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => 417(☓) => 416(o)
         // 多分オブジェクトっぽいので参照渡しになっている予想
         // 5行目は返り値が+1された状態で返されるだけでsea自体が+1されるわけではなかった
+        // TODO takamiya yes, 1回目のadd()で戻り値を戻しているところがポイントです by jflute (2026/07/27)
+        // TODO jflute ここは1on1にてじっくりフォロー予定 (2026/07/27)
     }
 
     // ===================================================================================
@@ -126,6 +130,8 @@ public class Step01VariableTest extends PlainTestCase {
         // instanceHangar:特に変わらずnull
         // instanceMagiclamp:引数で渡したものは関数内の変数となる。helpMethod内では関数内の変数として認識されると思うので
         // 変わらないという予想でnull
+        // TODO takamiya [いいね] 変数(という箱)自体が引数で渡されるわけではなく、参照が渡されるだけで... by jflute (2026/07/27)
+        // 呼び出し側の変数と、引数を受け取るための変数は、別物(の箱)ということですね。
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -165,6 +171,7 @@ public class Step01VariableTest extends PlainTestCase {
         helpMethodArgumentMethodcall(sea, land);
         log(sea); // your answer? => harbor416(o)
         // StringBuilderはオブジェクトなので引数でも参照渡しなのでhelp関数内での変更も反映される予想
+        // TODO takamiya 厳密には「mutableなオブジェクトなので」ということですね by jflute (2026/07/27)
     }
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
@@ -182,6 +189,7 @@ public class Step01VariableTest extends PlainTestCase {
         helpMethodArgumentVariable(sea, land);
         log(sea); // your answer? => harbor(o)
         // test関数内で作成されたオブジェクトに対して、help関数内では何もしていないので変わらない
+        // TODO takamiya [いいね] その通り、別のオブジェクト(インスタンス)のメソッドを呼んでるだけですね by jflute (2026/07/27)
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
@@ -210,6 +218,7 @@ public class Step01VariableTest extends PlainTestCase {
      * </pre>
      */
     private int piari;
+
     public void test_variable_writing() {
         String sea = "mystic";
         Integer land = null;
@@ -230,6 +239,7 @@ public class Step01VariableTest extends PlainTestCase {
      * </pre>
      */
     private StringBuilder sea;
+
     public void test_variable_yourExercise() {
         helpMethod();
         log(sea);
