@@ -50,18 +50,33 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => mystic8:mai(☓) => mystic8null:mai(o)
         // Integer型はstr型に自動でキャストされるかつnullは空文字と同じ扱いという予想
         // nullは"null"が出力される。printでも"null"が出力される。
+        // #1on1: プログラミング言語の決め (2026/07/27)
+        // C#だと、空文字が出力される。
+        // "null" のメリデメ:
+        // o デメリット: 本番で画面にnullって表示される可能性がある (メールの文言も)
+        // o メリット: 空文字とnullの違いの見分けられる(by たかみやさん)
+        //            ログでnullって出てわかりやすい、開発時は画面にnullって出てわかりやすい
+        // ログはnullって出るのはいいけど、print (System.out.println()) で出るのは？
+        // Javaだと、println (コンソール) もログの出力先の一つという感覚。
+        // 開発時は "null" で本番は空文字とか？
+        // 些細な違いでも、メリデメを考える習慣が大事。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
-        String sea = "mystic";
-        String land = "oneman";
+        String sea = "mystic"; // 1(mystic)
+        String land = "oneman"; // 2(oneman)
         sea = land;
-        land = land + "'s dreams";
+        land = land + "'s dreams"; // 3('s dreams), 4(oneman's dreams)
         log(sea); // your answer? => oneman(o)
         // sea = land は文字列を上書きしている（参照先の代入ではない）のでlandの中身が変わってもseaにまで反映されないという予想
         // オブジェクトでは参照渡しらしい
-        // TODO takamiya [いいね] オブジェクト型の変数は参照(アドレス)を持っているだけなのでGood by jflute (2026/07/27)
+        // done takamiya [いいね] オブジェクト型の変数は参照(アドレス)を持っているだけなのでGood by jflute (2026/07/27)
+        // #1on1: オブジェクト型とプリミティヴ型の変数としての違い (2026/07/27)
+        // #1on1: インスタンスとは？ (2026/07/27)
+        // クラス (テンプレート) に対して、実際の一個ものを作ったもの by たかみやさん
+        // 一軒家の例。
+        // インスタンスエクササイズ。BigDecimalのadd()も見てみた。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -72,21 +87,37 @@ public class Step01VariableTest extends PlainTestCase {
         land++;
         log(sea); // your answer? => 415(o)
         // 先程と同様にsea = landは値を上書きしている（参照先の代入ではない）のでlandの中身が変わってもseaにまで反映されないという予想
-        // TODO takamiya 一方で、プリミティヴ型の変数は、値そのものを持っているイメージでOK by jflute (2026/07/27)
+        // done takamiya 一方で、プリミティヴ型の変数は、値そのものを持っているイメージでOK by jflute (2026/07/27)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_BigDecimal() {
-        BigDecimal sea = new BigDecimal(94);
-        BigDecimal land = new BigDecimal(415);
+        BigDecimal sea = new BigDecimal(94); // 1
+        BigDecimal land = new BigDecimal(415); // 2
         sea = land;
-        sea = land.add(new BigDecimal(1));
-        sea.add(new BigDecimal(1));
+        sea = land.add(new BigDecimal(1)); // 3, 4
+        sea.add(new BigDecimal(1)); // 5, 6
         log(sea); // your answer? => 417(☓) => 416(o)
         // 多分オブジェクトっぽいので参照渡しになっている予想
         // 5行目は返り値が+1された状態で返されるだけでsea自体が+1されるわけではなかった
-        // TODO takamiya yes, 1回目のadd()で戻り値を戻しているところがポイントです by jflute (2026/07/27)
-        // TODO jflute ここは1on1にてじっくりフォロー予定 (2026/07/27)
+        // done takamiya yes, 1回目のadd()で戻り値を戻しているところがポイントです by jflute (2026/07/27)
+        // done jflute ここは1on1にてじっくりフォロー予定 (2026/07/27)
+        // #1on1: add()メソッドのコードリーディング (2026/07/27)
+        // #1on1: immutableとは？ (2026/07/27)
+        // immutableは不変、BigDecimalはimmutable。そういう実装になっている。
+        // クラス、immutable/mutableと二つある。
+        // o インスタンスのimmutable
+        // o 変数のimmutable
+        //
+        // immutableのメリデメ:
+        // (メリット)
+        // o 絶対に変わらないので、決まった定数とか変わらない前提、安全性 by たかみやさん
+        // o プログラムの中で動かないことが大事 by たかみやさん
+        // o 変わってないことが確定することで、読み飛ばせるとか可読性につながる
+        // 安全は可読性につながる(可能性が高い) by jflute
+        //
+        // (デメリット)
+        // TODO jflute 次回1on1にて、デメリットも出してみましょう (2026/07/27)
     }
 
     // ===================================================================================
