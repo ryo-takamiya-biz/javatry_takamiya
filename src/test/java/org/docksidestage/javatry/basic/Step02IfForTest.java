@@ -25,7 +25,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author takamiya
  */
 public class Step02IfForTest extends PlainTestCase {
 
@@ -50,9 +50,9 @@ public class Step02IfForTest extends PlainTestCase {
         if (sea > 904) {
             sea = 2001;
         } else {
-            sea = 7;
+            sea = 7; // ここに入る
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7(○)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -61,13 +61,13 @@ public class Step02IfForTest extends PlainTestCase {
         if (sea > 904) {
             sea = 2001;
         } else if (sea >= 904) {
-            sea = 7;
+            sea = 7; // ここに入る
         } else if (sea >= 903) {
             sea = 8;
         } else {
             sea = 9;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7(○)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -82,15 +82,15 @@ public class Step02IfForTest extends PlainTestCase {
             sea = ++sea * 2;
         } else if (sea >= 903 || land) {
             if (sea % 2 == 0) {
-                sea = sea++ * 2;
+                sea = sea++ * 2; // ここに入る → 1808
             }
             if (!land) {
-                land = true;
+                land = true; // ここに入る
             } else if (sea <= 903) {
                 sea++;
             }
             if (sea < 1810) {
-                sea = 8;
+                sea = 8; // ここに入る
             }
         } else if (sea == 8) {
             sea++;
@@ -99,15 +99,17 @@ public class Step02IfForTest extends PlainTestCase {
             sea = 9;
         }
         if (sea >= 9 || (sea > 7 && sea < 9)) {
-            sea--;
+            sea--; // ここに入る → 7
             if (sea % 2 == 1) {
-                sea++;
+                sea++; // ここに入る → 8
             }
         }
         if (land) {
-            sea = 10;
+            sea = 10; // ここに入る
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 8(☓) => 10(○)
+        // なぜか最後のif文の中身を考えていなかった
+        // 目だけで追うとちょっとつらい
     }
 
     // ===================================================================================
@@ -115,15 +117,15 @@ public class Step02IfForTest extends PlainTestCase {
     //                                                                       =============
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_inti_basic() {
-        List<String> stageList = prepareStageList();
+        List<String> stageList = prepareStageList(); // {"broadway", "dockside", "hangar", "magiclamp"}
         String sea = null;
         for (int i = 0; i < stageList.size(); i++) {
             String stage = stageList.get(i);
-            if (i == 1) {
+            if (i == 1) { // 1番目をseaに格納
                 sea = stage;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => "dockside"(○)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -131,25 +133,25 @@ public class Step02IfForTest extends PlainTestCase {
         List<String> stageList = prepareStageList();
         String sea = null;
         for (String stage : stageList) {
-            sea = stage;
+            sea = stage; // 毎回seaに格納
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => "magiclamp"(○)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_continueBreak() {
-        List<String> stageList = prepareStageList();
+        List<String> stageList = prepareStageList(); // {"broadway", "dockside", "hangar", "magiclamp"}
         String sea = null;
         for (String stage : stageList) {
-            if (stage.startsWith("br")) {
-                continue;
+            if (stage.startsWith("br")) { // brから始まるか
+                continue; // 0番目のみ
             }
             sea = stage;
-            if (stage.contains("ga")) {
-                break;
+            if (stage.contains("ga")) { // gaが含まれるか
+                break; // 2番目
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => "hangar"(○)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -158,14 +160,14 @@ public class Step02IfForTest extends PlainTestCase {
         StringBuilder sb = new StringBuilder();
         stageList.forEach(stage -> {
             if (sb.length() > 0) {
-                return;
+                return; // "dockside"後に出る
             }
             if (stage.contains("i")) {
-                sb.append(stage);
+                sb.append(stage); // "dockside"で入る
             }
         });
         String sea = sb.toString();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => "dockside"(○)
     }
 
     // ===================================================================================
@@ -177,6 +179,15 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_making() {
         // write if-for here
+        List<String> stageList_contain_a = new ArrayList<>();
+        for (String stage : prepareStageList()) {
+            if (stage.contains("a")) {
+                stageList_contain_a.add(stage);
+            }
+        }
+        for (String stage : stageList_contain_a) {
+            log(stage);
+        }
     }
 
     // ===================================================================================

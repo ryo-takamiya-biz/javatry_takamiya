@@ -161,7 +161,7 @@ public class Step01VariableTest extends PlainTestCase {
         // instanceHangar:特に変わらずnull
         // instanceMagiclamp:引数で渡したものは関数内の変数となる。helpMethod内では関数内の変数として認識されると思うので
         // 変わらないという予想でnull
-        // TODO takamiya [いいね] 変数(という箱)自体が引数で渡されるわけではなく、参照が渡されるだけで... by jflute (2026/07/27)
+        // TODO done takamiya [いいね] 変数(という箱)自体が引数で渡されるわけではなく、参照が渡されるだけで... by jflute (2026/07/27)
         // 呼び出し側の変数と、引数を受け取るための変数は、別物(の箱)ということですね。
     }
 
@@ -202,7 +202,9 @@ public class Step01VariableTest extends PlainTestCase {
         helpMethodArgumentMethodcall(sea, land);
         log(sea); // your answer? => harbor416(o)
         // StringBuilderはオブジェクトなので引数でも参照渡しなのでhelp関数内での変更も反映される予想
-        // TODO takamiya 厳密には「mutableなオブジェクトなので」ということですね by jflute (2026/07/27)
+        // TODO done takamiya 厳密には「mutableなオブジェクトなので」ということですね by jflute (2026/07/27)
+        // mutableなオブジェクトかつappendがオブジェクトの中身自体を書き換える関数であるため変更される
+        // stringはimmutableらしく+=するたびに新たに作成される
     }
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
@@ -220,7 +222,7 @@ public class Step01VariableTest extends PlainTestCase {
         helpMethodArgumentVariable(sea, land);
         log(sea); // your answer? => harbor(o)
         // test関数内で作成されたオブジェクトに対して、help関数内では何もしていないので変わらない
-        // TODO takamiya [いいね] その通り、別のオブジェクト(インスタンス)のメソッドを呼んでるだけですね by jflute (2026/07/27)
+        // TODO done takamiya [いいね] その通り、別のオブジェクト(インスタンス)のメソッドを呼んでるだけですね by jflute (2026/07/27)
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
