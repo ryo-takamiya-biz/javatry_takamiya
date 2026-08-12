@@ -60,6 +60,20 @@ public class Step01VariableTest extends PlainTestCase {
         // Javaだと、println (コンソール) もログの出力先の一つという感覚。
         // 開発時は "null" で本番は空文字とか？
         // 些細な違いでも、メリデメを考える習慣が大事。
+
+        // たくさんコメント書いててすばらCと思います！
+        // 課題が進むにつれて徐々に難易度上がり、業務も忙しくなるので着手するハードルを下げられるようにしておくと良きです！（自戒）
+        // TODO takamiya ちなみにRubyでは特定のメソッドをオーバーライドすると出力を変更できます by tsuji 2026/08/12
+        // p, pp, printでそれぞれ、inspect, pretty_inspect, to_sを定義すると出力がそれに応じたものになります　
+        // https://docs.ruby-lang.org/ja/latest/method/Object/i/to_s.html
+        // （ただのつぶやきなので、読んだらDoneにしちゃってください笑）
+
+        // TODO takamiya 案の提示、案ごとのメリデメの整理はよく求められます akinari.tsuji  (2026/08/12)
+        // ↓は永井さん（to 久保さん: 私と髙宮さんの元マネージャーです）が作成してくれた要件定義のポイントになります。
+        // そこにも、「解決案を最低でも2つ以上提示すること」・「それぞれのメリット・デメリットを提示すること」が記載されてます
+        // （publicリポジトリなので詳細は割愛します笑）
+        // （これも情報・資料共有くらいの気持ちなので、ご自身のタイミングでDoneにしちゃってください！）
+        // https://docs.google.com/document/d/1t1yVqV7Ax1a7UFGus0doYBT-obft-8fMtB5fX8Jd56Q/edit?tab=t.0
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -77,6 +91,10 @@ public class Step01VariableTest extends PlainTestCase {
         // クラス (テンプレート) に対して、実際の一個ものを作ったもの by たかみやさん
         // 一軒家の例。
         // インスタンスエクササイズ。BigDecimalのadd()も見てみた。
+
+        // TODO takamiya Rubyでは参照を値渡しします akinari.tsuji  (2026/08/12)
+        // もし興味があれば↓
+        // https://magazine.rubyist.net/articles/0032/0032-CallByValueAndCallByReference.html
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -118,6 +136,13 @@ public class Step01VariableTest extends PlainTestCase {
         //
         // (デメリット)
         // TODO jflute 次回1on1にて、デメリットも出してみましょう (2026/07/27)
+
+        // TODO takamiya Rubyではtrue, false, nil, symbol, integerなどがimmutableです by akinari.tsuji (2026/08/12)
+        // これも、ちなみに程度なので、Doneにしちゃってください笑
+        // 参考：https://docs.ruby-lang.org/ja/latest/method/Object/i/object_id.html
+        //
+        // あと全然話違いますけど、イミュータブルインフラというものがあるらしいです
+        // https://kobesoft.co.jp/mikata/words/network-cloud/immutable-infrastructure/
     }
 
     // ===================================================================================
