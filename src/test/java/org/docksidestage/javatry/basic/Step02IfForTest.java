@@ -110,6 +110,8 @@ public class Step02IfForTest extends PlainTestCase {
         log(sea); // your answer? => 8(☓) => 10(○)
         // なぜか最後のif文の中身を考えていなかった
         // 目だけで追うとちょっとつらい
+        // TODO takamiya [いいね] 良い体験です(^^。その思い出が工夫につながります。 by jflute (2026/08/13)
+        // TODO jflute 1on1にて、漠然読みのお話をする予定 (2026/08/13)
     }
 
     // ===================================================================================
@@ -136,6 +138,8 @@ public class Step02IfForTest extends PlainTestCase {
             sea = stage; // 毎回seaに格納
         }
         log(sea); // your answer? => "magiclamp"(○)
+
+        // TODO jflute 1on1にて、Java文法としてのfor文のお話 (2026/08/13)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
