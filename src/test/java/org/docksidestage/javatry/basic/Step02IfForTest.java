@@ -110,7 +110,14 @@ public class Step02IfForTest extends PlainTestCase {
         log(sea); // your answer? => 8(☓) => 10(○)
         // なぜか最後のif文の中身を考えていなかった
         // 目だけで追うとちょっとつらい
-        // TODO takamiya [いいね] 良い体験です(^^。その思い出が工夫につながります。 by jflute (2026/08/13)
+        // done takamiya [いいね] 良い体験です(^^。その思い出が工夫につながります。 by jflute (2026/08/13)
+        // #1on1: 目が疲れて小さなところを見逃してしまうミスをできるだけ防ぐために (2026/08/14)
+        // 最初に漠然と読んで構造だけ把握して、頭の中でコードの地図を作ってから、詳細を読む。
+        // すると、自分の位置を理解しながら読み進めていくことになるので、比較的見逃しも少なくなる。
+        //
+        // (漫画の例)
+        // 楽しく読むと、効率よく読むはちょっと違う。
+
         // TODO jflute 1on1にて、漠然読みのお話をする予定 (2026/08/13)
     }
 
@@ -139,7 +146,15 @@ public class Step02IfForTest extends PlainTestCase {
         }
         log(sea); // your answer? => "magiclamp"(○)
 
-        // TODO jflute 1on1にて、Java文法としてのfor文のお話 (2026/08/13)
+        // done jflute 1on1にて、Java文法としてのfor文のお話 (2026/08/13)
+        // #1on1: for文いっぱい (2026/08/14)
+        // $ 使い分けどうするんだろう？って思った by たかみやさん
+        // o intあいのfor文  // Java文法、C言語から伝わる伝統的なループ、Java当初から
+        // o 拡張for文 (foreach文, 普通のfor文) // Java文法、もっとすっきり書ける、Java10年くらいから
+        // → ここでは、使い分けはほとんど存在せず、ほぼ拡張for文 (現場感覚値)
+        //
+        // o forEach()メソッド // 単なるメソッド、Java20年くらいから
+        // TODO jflute ↑は、forEach()メソッドへの置き換えエクササイズやってもらってから (2026/08/14)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */

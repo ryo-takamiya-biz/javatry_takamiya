@@ -95,6 +95,9 @@ public class Step01VariableTest extends PlainTestCase {
         // TODO takamiya Rubyでは参照を値渡しします akinari.tsuji  (2026/08/12)
         // もし興味があれば↓
         // https://magazine.rubyist.net/articles/0032/0032-CallByValueAndCallByReference.html
+
+        // #1on1: 隣にいるスーパーグレイテストミラクルすごい先輩に一杯学びを得ましょう (2026/08/14)
+        // 一生隣にいるわけじゃないので、今がとても貴重。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -129,13 +132,34 @@ public class Step01VariableTest extends PlainTestCase {
         //
         // immutableのメリデメ:
         // (メリット)
-        // o 絶対に変わらないので、決まった定数とか変わらない前提、安全性 by たかみやさん
-        // o プログラムの中で動かないことが大事 by たかみやさん
+        // o $ 絶対に変わらないので、決まった定数とか変わらない前提、安全性 by たかみやさん
+        // o $ プログラムの中で動かないことが大事 by たかみやさん
         // o 変わってないことが確定することで、読み飛ばせるとか可読性につながる
         // 安全は可読性につながる(可能性が高い) by jflute
         //
         // (デメリット)
-        // TODO jflute 次回1on1にて、デメリットも出してみましょう (2026/07/27)
+        // done jflute 次回1on1にて、デメリットも出してみましょう (2026/07/27)
+        // o $ immutableで作ってて、結局変わるってなったとき、混在すると... by たかみやさん
+        //   → 変わらないと思ってた値が変わっちゃったら...
+        //   → 業務的に値が変わるケースのものでも、BigDecimalみたいにadd()で新しいインスタンス作って実現するとかできるかな？
+        //   → $ 業務的に値が変わるのに、実装はimmutableってのが、そもそも良いのか？ (設計の仕方？) by たかみやさん
+        //   → immutableメリットの可読性は、あくまでインスタンス単位の話 (インスタンス単位の可読性を重視するか？)
+        // o $ immutableでadd()しまくると、たくさんのインスタンスを把握しないといけない？ by たかみやさん
+        // o $ インスタンス作った分だけメモリを使う？ by たかみやさん
+        // o immutableは手間を掛けてimmutableにするので、言語サポートが欲しい。
+        //   → インフラに対して要求が高くなる
+        //
+        // immutableの歴史:
+        // o 昔は、メモリは貧弱、new/newするやり方は避ける傾向にあった。
+        // o 昔は、言語文法も貧弱、immutableをやり切るのも比較的大変だった。
+        // o 今や、メモリも言語文法もリッチで、デメリットが小さくなってきた。
+        //
+        // immutableのバランス:
+        // o 言語と組織と個人の文化に寄る
+        // o Java: 歴史的なところもあり、コンセプトなところもあり、8:2でimmutable推しでbut無理しない。
+        //   → jflute自身も、できるだけimmutableにするけど、でも無理せずmutableも堂々と使う。
+        //   → mutableで書く時は、安全性/可読性を別の手段で演出するように工夫する。
+        // o 一方で、他の言語では、100%immutable推しのものもある。
 
         // TODO takamiya Rubyではtrue, false, nil, symbol, integerなどがimmutableです by akinari.tsuji (2026/08/12)
         // これも、ちなみに程度なので、Doneにしちゃってください笑
@@ -143,6 +167,8 @@ public class Step01VariableTest extends PlainTestCase {
         //
         // あと全然話違いますけど、イミュータブルインフラというものがあるらしいです
         // https://kobesoft.co.jp/mikata/words/network-cloud/immutable-infrastructure/
+
+        // #1on1: 「ruby immutable 徹底してる？」でググってみた (2026/08/14)
     }
 
     // ===================================================================================
