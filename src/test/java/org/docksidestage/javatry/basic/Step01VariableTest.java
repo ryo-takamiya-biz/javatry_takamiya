@@ -63,12 +63,12 @@ public class Step01VariableTest extends PlainTestCase {
 
         // たくさんコメント書いててすばらCと思います！
         // 課題が進むにつれて徐々に難易度上がり、業務も忙しくなるので着手するハードルを下げられるようにしておくと良きです！（自戒）
-        // TODO takamiya ちなみにRubyでは特定のメソッドをオーバーライドすると出力を変更できます by tsuji 2026/08/12
+        // done takamiya ちなみにRubyでは特定のメソッドをオーバーライドすると出力を変更できます by tsuji 2026/08/12
         // p, pp, printでそれぞれ、inspect, pretty_inspect, to_sを定義すると出力がそれに応じたものになります　
         // https://docs.ruby-lang.org/ja/latest/method/Object/i/to_s.html
         // （ただのつぶやきなので、読んだらDoneにしちゃってください笑）
 
-        // TODO takamiya 案の提示、案ごとのメリデメの整理はよく求められます akinari.tsuji  (2026/08/12)
+        // done takamiya 案の提示、案ごとのメリデメの整理はよく求められます akinari.tsuji  (2026/08/12)
         // ↓は永井さん（to 久保さん: 私と髙宮さんの元マネージャーです）が作成してくれた要件定義のポイントになります。
         // そこにも、「解決案を最低でも2つ以上提示すること」・「それぞれのメリット・デメリットを提示すること」が記載されてます
         // （publicリポジトリなので詳細は割愛します笑）
@@ -92,7 +92,7 @@ public class Step01VariableTest extends PlainTestCase {
         // 一軒家の例。
         // インスタンスエクササイズ。BigDecimalのadd()も見てみた。
 
-        // TODO takamiya Rubyでは参照を値渡しします akinari.tsuji  (2026/08/12)
+        // done takamiya Rubyでは参照を値渡しします akinari.tsuji  (2026/08/12)
         // もし興味があれば↓
         // https://magazine.rubyist.net/articles/0032/0032-CallByValueAndCallByReference.html
 
@@ -161,7 +161,7 @@ public class Step01VariableTest extends PlainTestCase {
         //   → mutableで書く時は、安全性/可読性を別の手段で演出するように工夫する。
         // o 一方で、他の言語では、100%immutable推しのものもある。
 
-        // TODO takamiya Rubyではtrue, false, nil, symbol, integerなどがimmutableです by akinari.tsuji (2026/08/12)
+        // done takamiya Rubyではtrue, false, nil, symbol, integerなどがimmutableです by akinari.tsuji (2026/08/12)
         // これも、ちなみに程度なので、Doneにしちゃってください笑
         // 参考：https://docs.ruby-lang.org/ja/latest/method/Object/i/object_id.html
         //
