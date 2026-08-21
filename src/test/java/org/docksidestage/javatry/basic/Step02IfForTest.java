@@ -219,16 +219,20 @@ public class Step02IfForTest extends PlainTestCase {
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
         String sea = null;
-        for (String stage : stageList) {
+        StringBuilder seaBuilder = new StringBuilder();
+        stageList.forEach(stage -> {
             if (stage.startsWith("br")) {
-                continue;
+                return;
             }
-            sea = stage;
             if (stage.contains("ga")) {
-                break;
+                seaBuilder.append(stage);
             }
-        }
+        });
+        sea = seaBuilder.toString();
         log(sea); // should be same as before-fix
+        // 中でseaが使えない（ローカル変数は実質的にfinalでないといけない）、返り値も受け取れない
+        // 自力ではできなかった...
+        // 可変オブジェクトなら変更できるとわかったので、StringBuilderを経由した
     }
 
     /**
@@ -237,12 +241,21 @@ public class Step02IfForTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     * logの出力結果は？
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_iffor_yourExercise() {
-        // write your code here
+        List<String> stageList = prepareStageList();
+        int i = 0;
+        stageList.forEach(stage -> {
+            if (stage.contains("ng")) {
+                stage = stage + "abc";
+            }
+        });
+        stageList.forEach(stage -> {
+            log(stage);
+        });
     }
 
     // ===================================================================================
