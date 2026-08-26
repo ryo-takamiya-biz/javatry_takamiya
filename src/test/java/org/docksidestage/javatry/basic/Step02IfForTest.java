@@ -154,7 +154,7 @@ public class Step02IfForTest extends PlainTestCase {
         // → ここでは、使い分けはほとんど存在せず、ほぼ拡張for文 (現場感覚値)
         //
         // o forEach()メソッド // 単なるメソッド、Java20年くらいから
-        // TODO jflute ↑は、forEach()メソッドへの置き換えエクササイズやってもらってから (2026/08/14)
+        // done jflute ↑は、forEach()メソッドへの置き換えエクササイズやってもらってから (2026/08/14)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -217,6 +217,8 @@ public class Step02IfForTest extends PlainTestCase {
      * (foreach文をforEach()メソッドへの置き換えてみましょう (修正前と修正後で実行結果が同じになるように))
      */
     public void test_iffor_refactor_foreach_to_forEach() {
+        // TODO takamiya もし、stageListにbongarという要素が追加されても結果は同じになるか？ by jflute (2026/08/26)
+        // 手段は問わず互換性を維持してみましょう。
         List<String> stageList = prepareStageList();
         String sea = null;
         StringBuilder seaBuilder = new StringBuilder();
@@ -224,6 +226,8 @@ public class Step02IfForTest extends PlainTestCase {
             if (stage.startsWith("br")) {
                 return;
             }
+            // 読み取り専用の変数じゃないと Lambda式{}の中では利用できない (実質変更できない)
+            //sea = stage;
             if (stage.contains("ga")) {
                 seaBuilder.append(stage);
             }
@@ -233,6 +237,54 @@ public class Step02IfForTest extends PlainTestCase {
         // 中でseaが使えない（ローカル変数は実質的にfinalでないといけない）、返り値も受け取れない
         // 自力ではできなかった...
         // 可変オブジェクトなら変更できるとわかったので、StringBuilderを経由した
+
+        // #1on1: なぜseaを使えないのか？ (2026/08/26)
+        // $Lambda式の{}が(別の)関数みたいなものだから!? (by たかみやさん)
+        // まさしくその直感通りで、{}の中は別のクラス別のメソッドみたいなもの。
+        // forEach()のコードリーディングしてみると...
+        // Javaの文法としてのfor文をただ肩代わりしているだけの普通のメソッド。
+        // Lambda式とConsumerインターフェースのちょい先取り。じっくりはstep8にて。
+        // なんにせよ、{}のところは、別のクラスをnewして引数に入れているだけという感覚。
+        // $質問: 名前付きクラスをnewして入れることもできるか？
+        // できる。ライブコーディングで new Abc() してみた。
+        // $もち回すことがしやすいのがメリット？
+        // for文でもメソッド化できなくはないけど、Lambdaの方がオブジェクトになってるので扱いやすいというのはある。
+        // forEach()は、ただのfor文の代理人みたいな感じ。
+        //
+        // だから、別のメソッドが、別のメソッドのローカル変数を書き換えることができたら...大変。
+        // プログラミング言語の決めではあるが、カオスを生み出さないために制限を掛けている。
+        // ローカル変数はあくまでローカル変数なので、他のメソッドからは変更できないように。
+        //
+        // ただ、(条件付きで)参照だけはOK。参照は、変数の中身をコピーしてしまえば管理を分離できるから。
+        // 条件というが、immutableな変数であること。変わらなければ、参照のカオスは起きない。
+        //
+        // 実質的finalとは？のお話。
+        //
+        // return; が使えるのは、{} がメソッドだから。
+        // continue; が使えないのは、{} が単なるメソッドだから。(for文の直下の処理じゃないから)
+        //
+        // なので、forEach()メソッドは、外側変数の代入もできないし、continue/breakもできない。
+        // できないことが多いループ。
+        //
+        // o intあいfor文      : Java当初から(1995年)
+        // o 拡張for文         : 10年後くらいにできた(2005年くらい)
+        // o forEach()メソッド : 20年後くらいにできた(2015年くらい)
+        //
+        // $ストレートなループ処理の時だけ使う？
+        // yes, webサービスの世界だと、ループってストレートに回すだけのことが圧倒的に多い。
+        // 制限を掛けることで得られるものがある。
+        // $immutableのときの話と同じ？
+        // yes, 安全性と可読性
+        //
+        // 拡張for文: mutableなループなイメージ
+        // forEach()メソッド: immutableなループなイメージ
+        //
+        // よもやま: 極論のお話
+        //
+        // mutableなオブジェクトでforEach()メソッドを台無しにできる。
+        // (だからこそ、オブジェクトもimmutableに寄せようと言う考えもある)
+        //
+        // 適材適所すぎるのもつらいのでジレンマ。
     }
 
     /**
