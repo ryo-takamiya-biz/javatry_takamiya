@@ -217,23 +217,38 @@ public class Step02IfForTest extends PlainTestCase {
      * (foreach文をforEach()メソッドへの置き換えてみましょう (修正前と修正後で実行結果が同じになるように))
      */
     public void test_iffor_refactor_foreach_to_forEach() {
-        // TODO takamiya もし、stageListにbongarという要素が追加されても結果は同じになるか？ by jflute (2026/08/26)
+        // done takamiya もし、stageListにbongarという要素が追加されても結果は同じになるか？ by jflute (2026/08/26)
         // 手段は問わず互換性を維持してみましょう。
+        // ver2
         List<String> stageList = prepareStageList();
         String sea = null;
-        StringBuilder seaBuilder = new StringBuilder();
+        String[] seaList = new String[1];
         stageList.forEach(stage -> {
             if (stage.startsWith("br")) {
                 return;
             }
-            // 読み取り専用の変数じゃないと Lambda式{}の中では利用できない (実質変更できない)
-            //sea = stage;
-            if (stage.contains("ga")) {
-                seaBuilder.append(stage);
+            if (seaList[0] == null && stage.contains("ga")) {
+                seaList[0] = stage;
             }
         });
-        sea = seaBuilder.toString();
+        sea = seaList[0];
         log(sea); // should be same as before-fix
+        // ver1
+//        List<String> stageList = prepareStageList();
+//        String sea = null;
+//        StringBuilder seaBuilder = new StringBuilder();
+//        stageList.forEach(stage -> {
+//            if (stage.startsWith("br")) {
+//                return;
+//            }
+//            // 読み取り専用の変数じゃないと Lambda式{}の中では利用できない (実質変更できない)
+//            //sea = stage;
+//            if (stage.contains("ga")) {
+//                seaBuilder.append(stage);
+//            }
+//        });
+//        sea = seaBuilder.toString();
+//        log(sea); // should be same as before-fix
         // 中でseaが使えない（ローカル変数は実質的にfinalでないといけない）、返り値も受け取れない
         // 自力ではできなかった...
         // 可変オブジェクトなら変更できるとわかったので、StringBuilderを経由した
