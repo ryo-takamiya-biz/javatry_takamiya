@@ -220,6 +220,8 @@ public class Step02IfForTest extends PlainTestCase {
         // done takamiya もし、stageListにbongarという要素が追加されても結果は同じになるか？ by jflute (2026/08/26)
         // 手段は問わず互換性を維持してみましょう。
         // ver2
+        // #1on1: gaを含むものが二つあっても、最初のgaだけが残るようになっているGood (2026/09/08)
+        // TODO takamiya "ga" を含むものが一つもなかったときに以前と結果が同じになるか？ by jflute (2026/09/08)
         List<String> stageList = prepareStageList();
         String sea = null;
         String[] seaList = new String[1];
@@ -234,21 +236,21 @@ public class Step02IfForTest extends PlainTestCase {
         sea = seaList[0];
         log(sea); // should be same as before-fix
         // ver1
-//        List<String> stageList = prepareStageList();
-//        String sea = null;
-//        StringBuilder seaBuilder = new StringBuilder();
-//        stageList.forEach(stage -> {
-//            if (stage.startsWith("br")) {
-//                return;
-//            }
-//            // 読み取り専用の変数じゃないと Lambda式{}の中では利用できない (実質変更できない)
-//            //sea = stage;
-//            if (stage.contains("ga")) {
-//                seaBuilder.append(stage);
-//            }
-//        });
-//        sea = seaBuilder.toString();
-//        log(sea); // should be same as before-fix
+        //        List<String> stageList = prepareStageList();
+        //        String sea = null;
+        //        StringBuilder seaBuilder = new StringBuilder();
+        //        stageList.forEach(stage -> {
+        //            if (stage.startsWith("br")) {
+        //                return;
+        //            }
+        //            // 読み取り専用の変数じゃないと Lambda式{}の中では利用できない (実質変更できない)
+        //            //sea = stage;
+        //            if (stage.contains("ga")) {
+        //                seaBuilder.append(stage);
+        //            }
+        //        });
+        //        sea = seaBuilder.toString();
+        //        log(sea); // should be same as before-fix
         // 中でseaが使えない（ローカル変数は実質的にfinalでないといけない）、返り値も受け取れない
         // 自力ではできなかった...
         // 可変オブジェクトなら変更できるとわかったので、StringBuilderを経由した
@@ -300,6 +302,21 @@ public class Step02IfForTest extends PlainTestCase {
         // (だからこそ、オブジェクトもimmutableに寄せようと言う考えもある)
         //
         // 適材適所すぎるのもつらいのでジレンマ。
+
+        /* 元の一番最初の状態:
+        List<String> stageList = prepareStageList();
+        String sea = null;
+        for (String stage : stageList) {
+            if (stage.startsWith("br")) {
+                continue;
+            }
+            sea = stage;
+            if (stage.contains("ga")) {
+                break;
+            }
+        }
+        log(sea); // should be same as before-fix
+         */
     }
 
     /**
