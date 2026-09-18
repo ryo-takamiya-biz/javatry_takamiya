@@ -25,11 +25,13 @@ public class TicketBooth {
     //                                                                          ==========
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    private static final int TWO_DAY_PRICE = 13200;
 
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    private int quantity = MAX_QUANTITY;
+    private int oneDayQuantity = MAX_QUANTITY;
+    private int twoDayQuantity = MAX_QUANTITY;
     private Integer salesProceeds; // null allowed: until first purchase
 
     // ===================================================================================
@@ -56,18 +58,40 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public void buyOneDayPassport(Integer handedMoney) {
-        if (quantity <= 0) {
+        if (oneDayQuantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
-        --quantity;
         if (handedMoney < ONE_DAY_PRICE) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
+        --oneDayQuantity;
         if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + handedMoney;
+            salesProceeds = salesProceeds + ONE_DAY_PRICE;
         } else { // first purchase
-            salesProceeds = handedMoney;
+            salesProceeds = ONE_DAY_PRICE;
         }
+    }
+
+     /**
+     * 2Dayパスポートを買う、パークゲスト用のメソッド。
+     * @param handedMoney パークゲストから手渡しされたお金(金額) (NotNull, NotMinus)
+     * @throws TicketSoldOutException ブース内のチケットが売り切れだったら
+     * @throws TicketShortMoneyException 買うのに金額が足りなかったら
+     */
+    public Integer buyTwoDayPassport(Integer handedMoney) {
+        if (twoDayQuantity <= 0) {
+            throw new TicketSoldOutException("Sold out");
+        }
+        if (handedMoney < TWO_DAY_PRICE) {
+            throw new TicketShortMoneyException("Short money: " + handedMoney);
+        }
+        --twoDayQuantity;
+        if (salesProceeds != null) { // second or more purchase
+            salesProceeds = salesProceeds + TWO_DAY_PRICE;
+        } else { // first purchase
+            salesProceeds = TWO_DAY_PRICE;
+        }
+        return handedMoney - TWO_DAY_PRICE;
     }
 
     public static class TicketSoldOutException extends RuntimeException {
@@ -92,7 +116,11 @@ public class TicketBooth {
     //                                                                            Accessor
     //                                                                            ========
     public int getQuantity() {
-        return quantity;
+        return oneDayQuantity;
+    }
+
+    public int getTwoDayQuantity() {
+        return twoDayQuantity;
     }
 
     public Integer getSalesProceeds() {

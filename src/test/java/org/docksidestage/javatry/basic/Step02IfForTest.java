@@ -221,7 +221,7 @@ public class Step02IfForTest extends PlainTestCase {
         // 手段は問わず互換性を維持してみましょう。
         // ver2
         // #1on1: gaを含むものが二つあっても、最初のgaだけが残るようになっているGood (2026/09/08)
-        // TODO takamiya "ga" を含むものが一つもなかったときに以前と結果が同じになるか？ by jflute (2026/09/08)
+        // done takamiya "ga" を含むものが一つもなかったときに以前と結果が同じになるか？ by jflute (2026/09/08)
         List<String> stageList = prepareStageList();
         String sea = null;
         String[] seaList = new String[1];
@@ -229,7 +229,7 @@ public class Step02IfForTest extends PlainTestCase {
             if (stage.startsWith("br")) {
                 return;
             }
-            if (seaList[0] == null && stage.contains("ga")) {
+            if (stage.contains("ga") || seaList[0] == null || !seaList[0].contains("ga")) {
                 seaList[0] = stage;
             }
         });
