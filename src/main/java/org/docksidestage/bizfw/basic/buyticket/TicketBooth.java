@@ -30,6 +30,9 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
+    // #1on1: いいね、在庫を分けるスタイルGood (2026/09/25)
+    // $迷った。実際売られる場合を想像した時に、在庫一緒は現実的じゃないな。
+    // 色々なパターンを想像してみて、在庫分離の方が自然かも。
     private int oneDayQuantity = MAX_QUANTITY;
     private int twoDayQuantity = MAX_QUANTITY;
     private Integer salesProceeds; // null allowed: until first purchase
@@ -72,12 +75,13 @@ public class TicketBooth {
         }
     }
 
-     /**
-     * 2Dayパスポートを買う、パークゲスト用のメソッド。
-     * @param handedMoney パークゲストから手渡しされたお金(金額) (NotNull, NotMinus)
-     * @throws TicketSoldOutException ブース内のチケットが売り切れだったら
-     * @throws TicketShortMoneyException 買うのに金額が足りなかったら
-     */
+    // TODO takamiya JavaDoc, @return も追加をお願いします by jflute (2026/09/25)
+    /**
+    * 2Dayパスポートを買う、パークゲスト用のメソッド。
+    * @param handedMoney パークゲストから手渡しされたお金(金額) (NotNull, NotMinus)
+    * @throws TicketSoldOutException ブース内のチケットが売り切れだったら
+    * @throws TicketShortMoneyException 買うのに金額が足りなかったら
+    */
     public Integer buyTwoDayPassport(Integer handedMoney) {
         if (twoDayQuantity <= 0) {
             throw new TicketSoldOutException("Sold out");
@@ -115,6 +119,14 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
+    // #1on1: 迷いポイント、getQuantity() or getOneDayQuantity()？ (2026/09/25)
+    // $単純にどこまでいじっていいかを迷った
+    // 在庫分離の概念を取り入れてるからには、メソッドの形も合わせても良いかなと。
+    // ただ、既存コードなので、呼び出し側を確認して動作的にOKかどうか見てから。
+    // 全部そのままで大丈夫なパターンになっている（＞＜。全部oneDayを想定している。
+    // トータルニュアンスでgetしているところがあったとしたら、そのままではいけない。
+    // TODO takamiya 決めの問題ですが、OneDay/TwoDayと対比させるようにしましょう。 by jflute (2026/09/25)
+    // (getQuantity()のままだと、ちょっとトータルを出すのかな？って思ってしまう人もいるかも)
     public int getQuantity() {
         return oneDayQuantity;
     }
