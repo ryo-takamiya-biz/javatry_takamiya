@@ -137,7 +137,7 @@ public class Step02IfForTest extends PlainTestCase {
         //
         // 仮説思考的なコードリーディング。
         // 
-        // TODO takamiya [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/09/25)
+        // done takamiya [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/09/25)
         // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
     }
 
@@ -242,7 +242,7 @@ public class Step02IfForTest extends PlainTestCase {
         // ver2
         // #1on1: gaを含むものが二つあっても、最初のgaだけが残るようになっているGood (2026/09/08)
         // done takamiya "ga" を含むものが一つもなかったときに以前と結果が同じになるか？ by jflute (2026/09/08)
-        // TODO takamiya 今度は、最後のgaが残るようになってしまっている by jflute (2026/09/25)
+        // done takamiya 今度は、最後のgaが残るようになってしまっている by jflute (2026/09/25)
         List<String> stageList = prepareStageList();
         String sea = null;
         String[] seaList = new String[1];
@@ -250,7 +250,7 @@ public class Step02IfForTest extends PlainTestCase {
             if (stage.startsWith("br")) {
                 return;
             }
-            if (stage.contains("ga") || seaList[0] == null || !seaList[0].contains("ga")) {
+            if (seaList[0] == null || !seaList[0].contains("ga")) {
                 seaList[0] = stage;
             }
         });

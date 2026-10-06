@@ -16,52 +16,32 @@
 package org.docksidestage.bizfw.basic.buyticket;
 
 /**
- * @author jflute
+ * @author takamiya
  */
-public class Ticket {
+public class TicketBuyResult {
 
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    private final int displayPrice; // written on ticket, park guest can watch this
-    private final int allowedEntryCount; // 入場可能な回数
-    private int entryCount = 0; // 入場した回数
-    private final String allowedEntryTime;
+    private final Ticket ticket; // ticket
+    private final int charge; // true means this ticket is unavailable
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public Ticket(int displayPrice, int allowedEntryCount, String allowedEntryTime) {
-        this.displayPrice = displayPrice;
-        this.allowedEntryCount = allowedEntryCount;
-        this.allowedEntryTime = allowedEntryTime;
-    }
-
-    // ===================================================================================
-    //                                                                             In Park
-    //                                                                             =======
-    public void doInPark(String entryTime) {
-        if (entryCount == allowedEntryCount) {
-            throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
-        }
-        if (!allowedEntryTime.equals("allDay")  && !allowedEntryTime.equals(entryTime)) {
-            throw new IllegalStateException("Entry is not allowed at this time: allowedEntryTime=" + allowedEntryTime);
-        }
-        ++entryCount;
+    public TicketBuyResult(Ticket ticket, int charge) {
+        this.ticket = ticket;
+        this.charge = charge;
     }
 
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
-    public int getDisplayPrice() {
-        return displayPrice;
+    public Ticket getTicket() {
+        return ticket;
     }
 
-    public int getAllowedEntryCount() {
-        return allowedEntryCount;
-    }
-
-    public boolean isFullyUsed() {
-        return entryCount == allowedEntryCount;
+    public int getChange() {
+        return charge;
     }
 }
