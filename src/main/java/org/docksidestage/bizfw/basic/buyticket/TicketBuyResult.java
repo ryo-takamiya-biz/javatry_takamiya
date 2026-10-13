@@ -23,7 +23,10 @@ public class TicketBuyResult {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
+    // TODO takamiya ticket変数にticketという説明は冗長なので..."購入されたチケット (NotNull)" とか by jflute (2026/10/13)
     private final Ticket ticket; // ticket
+    // TODO takamiya コメントがboolean仕様になってて、どこかからコピーされてきた？ by jflute (2026/10/13)
+    // TODO takamiya チャージになってる。でもgetterは正しくchangeに by jflute (2026/10/13)
     private final int charge; // true means this ticket is unavailable
 
     // ===================================================================================

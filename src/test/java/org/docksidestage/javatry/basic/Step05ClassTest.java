@@ -196,6 +196,10 @@ public class Step05ClassTest extends PlainTestCase {
 
     // uncomment when you implement this exercise
     private void showTicketIfNeeds(Ticket ticket) {
+        // #1on1: nightOnlyのTwoDayも含んでいるニュアンス？ (2026/10/13)
+        // $nightOnlyの方は意図してなかった。
+        // 新しい仕様追加によって、今までうまくいってた判定が、曖昧になってしまう。
+        // TODO takamiya nightOnlyは省いて判定できるようにしましょう by jflute (2026/10/13)
         if (ticket.getAllowedEntryCount() == 2) { // write determination for two-day passport
             log("two-day passport");
         } else {

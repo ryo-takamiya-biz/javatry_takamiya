@@ -23,6 +23,9 @@ public class Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
+    // #1on1: "入場可能な回数", "入場した回数" の横のコメントGood (2026/10/13)
+    // "入場可能な回数" という概念、現在の入場可能な回数なのか？そのチケット種別で入れるMAX回数なのか？
+    // TODO takamiya なので、"入場可能な回数" は、もうちょいしっかり固定値な日数であることがわかるような概念名を付けよう by jflute (2026/10/13)
     private final int displayPrice; // written on ticket, park guest can watch this
     private final int allowedEntryCount; // 入場可能な回数
     private int entryCount = 0; // 入場した回数
@@ -40,12 +43,19 @@ public class Ticket {
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
+    // TODO takamiya 引数名、「入園の時間帯」つまり実質「今の時間帯」なので、何かしらそのニュアンスの名前が欲しい by jflute (2026/10/13)
+    // TODO takamiya 修行++: 呼び出し側が時間帯を入れると呼び出し側で細工ができて予期せぬ挙動も許してしまう。 by jflute (2026/10/13)
+    // なので、「入園の時間帯」は doInPark() 内で導出して、判定するようにしたいところ。
+    // ただ、テストのときは「入園の時間帯」を細工して動作確認したいので、そことトレードオフになっちゃう。
+    // そのトレードオフをどうにかして回避したいところだが、難易度が高いので修行++扱い。
     public void doInPark(String entryTime) {
         if (entryCount == allowedEntryCount) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         }
-        if (!allowedEntryTime.equals("allDay")  && !allowedEntryTime.equals(entryTime)) {
-            throw new IllegalStateException("Entry is not allowed at this time: allowedEntryTime=" + allowedEntryTime);
+        if (!allowedEntryTime.equals("allDay") && !allowedEntryTime.equals(entryTime)) {
+            // #1on1: いいね、例外メッセージに allowedEntryTime を入れてデバッグ用の情報を出力している (2026/10/13)
+            // jfluteだったら、もうentryTimeも両方出しちゃう。(step7とかでも話する予定)
+            throw new IllegalStateException("Entry is not allowed at this time=" + allowedEntryTime);
         }
         ++entryCount;
     }
