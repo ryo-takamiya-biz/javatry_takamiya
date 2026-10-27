@@ -14,10 +14,12 @@
  * governing permissions and limitations under the License.
  */
 package org.docksidestage.bizfw.basic.buyticket;
+import java.time.LocalTime;
 
-// TODO takamiya javadocにauthorの追加をお願いします by jflute (2026/10/13)
+// done takamiya javadocにauthorの追加をお願いします by jflute (2026/10/13)
 /**
  * @author jflute
+ * @author takamiya
  */
 public class TicketBooth {
 
@@ -25,11 +27,56 @@ public class TicketBooth {
     //                                                                          Definition
     //                                                                          ==========
     private static final int MAX_QUANTITY = 10;
-    private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
-    private static final int TWO_DAY_PRICE = 13200;
-    private static final int FOUR_DAY_PRICE = 22400;
-    // TODO takamiya コピペミスっぽい、正しい仕様の7400を設定しましょう by jflute (2026/10/13)
-    private static final int NIGHT_ONLY_TWO_DAY_PRICE = 13200;
+    // private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    // private static final int TWO_DAY_PRICE = 13200;
+    // private static final int FOUR_DAY_PRICE = 22400;
+    // done takamiya コピペミスっぽい、正しい仕様の7400を設定しましょう by jflute (2026/10/13)
+    // private static final int NIGHT_ONLY_TWO_DAY_PRICE = 7400;
+    public enum TicketType {
+        ONE_DAY(7400, 1, AllowedEntryTimeType.ALL_DAY),
+        TWO_DAY(13200, 2, AllowedEntryTimeType.ALL_DAY),
+        FOUR_DAY(22400, 4, AllowedEntryTimeType.ALL_DAY),
+        NIGHT_ONLY_TWO_DAY(7400, 2, AllowedEntryTimeType.NIGHT);
+
+        private final int price;
+        private final int maxEntryCount;
+        private final AllowedEntryTimeType allowedEntryTimeType;
+
+        TicketType(int price, int maxEntryCount, AllowedEntryTimeType allowedEntryTimeType) {
+            this.price = price;
+            this.maxEntryCount = maxEntryCount;
+            this.allowedEntryTimeType = allowedEntryTimeType;
+        }
+
+        public int getPrice() { return price; }
+
+        public int getMaxEntryCount() { return maxEntryCount; }
+
+        public AllowedEntryTimeType getAllowedEntryTimeType() { return allowedEntryTimeType; }
+    }
+
+    public enum AllowedEntryTimeType {
+        ALL_DAY(LocalTime.of(9, 0), LocalTime.of(21, 0)),
+        MORNING(LocalTime.of(9, 0), LocalTime.of(12, 0)),
+        AFTERNOON(LocalTime.of(12, 0), LocalTime.of(17, 0)),
+        NIGHT(LocalTime.of(17, 0), LocalTime.of(21, 0));
+
+        private final LocalTime startTime;
+        private final LocalTime endTime;
+
+        AllowedEntryTimeType (LocalTime startTime, LocalTime endTime) {
+            this.startTime = startTime;
+            this.endTime = endTime;
+        }
+
+        public LocalTime getStartTime() { return startTime; }
+
+        public LocalTime getEndTime() { return endTime; }
+
+        public boolean isAllowedEntry(LocalTime currentTime) {
+            return !currentTime.isAfter(startTime) && currentTime.isAfter(endTime);
+        }
+    }
 
     // ===================================================================================
     //                                                                           Attribute
@@ -37,11 +84,11 @@ public class TicketBooth {
     // #1on1: いいね、在庫を分けるスタイルGood (2026/09/25)
     // $迷った。実際売られる場合を想像した時に、在庫一緒は現実的じゃないな。
     // 色々なパターンを想像してみて、在庫分離の方が自然かも。
-    // TODO takamiya NightOnlyTwoDayQuantity 変数だけ先頭が大文字 by jflute (2026/10/13)
+    // done takamiya NightOnlyTwoDayQuantity 変数だけ先頭が大文字 by jflute (2026/10/13)
     private int oneDayQuantity = MAX_QUANTITY;
     private int twoDayQuantity = MAX_QUANTITY;
     private int fourDayQuantity = MAX_QUANTITY;
-    private int NightOnlyTwoDayQuantity = MAX_QUANTITY;
+    private int nightOnlyTwoDayQuantity = MAX_QUANTITY;
     private Integer salesProceeds; // null allowed: until first purchase
 
     // ===================================================================================
@@ -61,20 +108,20 @@ public class TicketBooth {
     // * @throws TicketSoldOutException ブース内のチケットが売り切れだったら
     // * @throws TicketShortMoneyException 買うのに金額が足りなかったら
     // */
-    // TODO takamiya $returnになってる。@returnが正しい。 by jflute (2026/10/13)
+    // done takamiya $returnになってる。@returnが正しい。 by jflute (2026/10/13)
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
-     * $return チケットクラス
+     * @return チケットクラス
      */
-    public Ticket buyOneDayPassport(Integer handedMoney) {
-        // TODO takamiya "allDay", "night" はハードコードの文字列ではなく... by jflute (2026/10/13)
+    public TicketBuyResult buyOneDayPassport(Integer handedMoney) {
+        // done takamiya "allDay", "night" はハードコードの文字列ではなく... by jflute (2026/10/13)
         // せめて、static final な定数にしましょう。スペルミスによる間違いも防ぎたいし、
         // リファクタリングでallDay, nightの中身の文字列を直す時も、何ヶ所も修正しなくても済むように。
-        oneDayQuantity = buyPassport(handedMoney, oneDayQuantity, ONE_DAY_PRICE);
-        return new Ticket(ONE_DAY_PRICE, 1, "allDay");
+        oneDayQuantity = doBuyPassport(handedMoney, oneDayQuantity, TicketType.ONE_DAY);
+        return new TicketBuyResult(new Ticket(TicketType.ONE_DAY), handedMoney);
     }
 
     // #1on1: twoDay以降もJavaDocが入っていてGood (2026/10/13)
@@ -88,9 +135,9 @@ public class TicketBooth {
     * @return チケット購入結果
     */
     public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
-        // TODO takamiya TicketBuyResultの行も、再利用をどうにかしたいところ by jflute (2026/10/13)
-        twoDayQuantity = buyPassport(handedMoney, twoDayQuantity, TWO_DAY_PRICE);
-        return new TicketBuyResult(new Ticket(TWO_DAY_PRICE, 2, "allDay"), handedMoney - TWO_DAY_PRICE);
+        // done takamiya TicketBuyResultの行も、再利用をどうにかしたいところ by jflute (2026/10/13)
+        twoDayQuantity = doBuyPassport(handedMoney, twoDayQuantity, TicketType.TWO_DAY);
+        return new TicketBuyResult(new Ticket(TicketType.TWO_DAY), handedMoney);
     }
 
     /**
@@ -101,8 +148,8 @@ public class TicketBooth {
      * @return チケット購入結果
      */
     public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
-        fourDayQuantity = buyPassport(handedMoney, fourDayQuantity, FOUR_DAY_PRICE);
-        return new TicketBuyResult(new Ticket(FOUR_DAY_PRICE, 4, "allDay"), handedMoney - FOUR_DAY_PRICE);
+        fourDayQuantity = doBuyPassport(handedMoney, fourDayQuantity, TicketType.FOUR_DAY);
+        return new TicketBuyResult(new Ticket(TicketType.FOUR_DAY), handedMoney);
     }
 
     /**
@@ -113,14 +160,16 @@ public class TicketBooth {
      * @return チケット購入結果
      */
     public TicketBuyResult buyNightOnlyTwoDayPassport(Integer handedMoney) {
-        NightOnlyTwoDayQuantity = buyPassport(handedMoney, NightOnlyTwoDayQuantity, NIGHT_ONLY_TWO_DAY_PRICE);
-        return new TicketBuyResult(new Ticket(NIGHT_ONLY_TWO_DAY_PRICE, 2, "night"), handedMoney - NIGHT_ONLY_TWO_DAY_PRICE);
+        nightOnlyTwoDayQuantity = doBuyPassport(handedMoney, nightOnlyTwoDayQuantity, TicketType.NIGHT_ONLY_TWO_DAY);
+        return new TicketBuyResult(new Ticket(TicketType.NIGHT_ONLY_TWO_DAY), handedMoney);
     }
 
-    // TODO takamiya publicのbuyとprivateのbuyを区別するテクニック by jflute (2026/10/13)
+    // done takamiya publicのbuyとprivateのbuyを区別するテクニック by jflute (2026/10/13)
     // buyがメソッド一覧で混ざるのと、会話上ちょっと紛れやすいと言うのもあって、メソッド名を工夫して区別したりする。
     // e.g. doBuyPassport(), internalBuyPassport()
-    private int buyPassport(Integer handedMoney, int quantity, int price) {
+    private int doBuyPassport(Integer handedMoney, int quantity, TicketType ticketType) {
+        int price = ticketType.getPrice();
+
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
@@ -173,12 +222,15 @@ public class TicketBooth {
         return twoDayQuantity;
     }
 
-    // TODO takamiya コピペミス by jflute (2026/10/13)
+    // done takamiya コピペミス by jflute (2026/10/13)
     public int getFourDayQuantity() {
-        return twoDayQuantity;
+        return fourDayQuantity;
     }
 
-    // TODO takamiya nightOnlyのquantityのgetterもあった方がバランス良いかなと by jflute (2026/10/13)
+    // done takamiya nightOnlyのquantityのgetterもあった方がバランス良いかなと by jflute (2026/10/13)
+    public int getNightOnlyTwoDayQuantity() {
+        return nightOnlyTwoDayQuantity;
+    }
 
     public Integer getSalesProceeds() {
         return salesProceeds;

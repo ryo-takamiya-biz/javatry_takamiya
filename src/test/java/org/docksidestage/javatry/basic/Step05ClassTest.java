@@ -141,10 +141,11 @@ public class Step05ClassTest extends PlainTestCase {
     public void test_class_moreFix_return_ticket() {
         // uncomment out after modifying the method
         TicketBooth booth = new TicketBooth();
-        Ticket oneDayPassport = booth.buyOneDayPassport(10000);
+        TicketBuyResult buyResult = booth.buyOneDayPassport(10000);
+        Ticket oneDayPassport = buyResult.getTicket();
         log(oneDayPassport.getDisplayPrice()); // should be same as one-day price
         log(oneDayPassport.isFullyUsed()); // should be false
-        oneDayPassport.doInPark("noon");
+        oneDayPassport.doInPark();
         log(oneDayPassport.isFullyUsed()); // should be true
         // importしてbuyOneDayPassportの返り値をTicketに変更
     }
@@ -174,9 +175,9 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBuyResult buyResult = booth.buyTwoDayPassport(handedMoney);
         Ticket twoDayPassport = buyResult.getTicket();
         log(twoDayPassport.isFullyUsed()); // should be false
-        twoDayPassport.doInPark("noon");
+        twoDayPassport.doInPark();
         log(twoDayPassport.isFullyUsed()); // should be false
-        twoDayPassport.doInPark("noon");
+        twoDayPassport.doInPark();
         log(twoDayPassport.isFullyUsed()); // should be true
     }
 
@@ -187,10 +188,13 @@ public class Step05ClassTest extends PlainTestCase {
     public void test_class_moreFix_whetherTicketType() {
         // uncomment when you implement this exercise
         TicketBooth booth = new TicketBooth();
-        Ticket oneDayPassport = booth.buyOneDayPassport(10000);
+        Ticket oneDayPassport = booth.buyOneDayPassport(10000).getTicket();
         showTicketIfNeeds(oneDayPassport);
-        TicketBuyResult buyResult = booth.buyTwoDayPassport(20000);
-        Ticket twoDayPassport = buyResult.getTicket();
+        TicketBuyResult buyResult1 = booth.buyNightOnlyTwoDayPassport(20000);
+        Ticket nightOnlyTwoDayPassport = buyResult1.getTicket();
+        showTicketIfNeeds(nightOnlyTwoDayPassport);
+        TicketBuyResult buyResult2 = booth.buyTwoDayPassport(20000);
+        Ticket twoDayPassport = buyResult2.getTicket();
         showTicketIfNeeds(twoDayPassport);
     }
 
@@ -199,8 +203,8 @@ public class Step05ClassTest extends PlainTestCase {
         // #1on1: nightOnlyのTwoDayも含んでいるニュアンス？ (2026/10/13)
         // $nightOnlyの方は意図してなかった。
         // 新しい仕様追加によって、今までうまくいってた判定が、曖昧になってしまう。
-        // TODO takamiya nightOnlyは省いて判定できるようにしましょう by jflute (2026/10/13)
-        if (ticket.getAllowedEntryCount() == 2) { // write determination for two-day passport
+        // done takamiya nightOnlyは省いて判定できるようにしましょう by jflute (2026/10/13)
+        if (ticket.getMaxEntryCount() == 2 && ticket.getAllowedEntryTimeType() == TicketBooth.AllowedEntryTimeType.ALL_DAY) { // write determination for two-day passport
             log("two-day passport");
         } else {
             log("other");
@@ -223,7 +227,7 @@ public class Step05ClassTest extends PlainTestCase {
         Ticket fourDayPassport = buyResult.getTicket();
         log(fourDayPassport.isFullyUsed());
         for (int i = 0; i < 4; i++) {
-            fourDayPassport.doInPark("noon");
+            fourDayPassport.doInPark();
             log(fourDayPassport.isFullyUsed());
         }
         int charge = buyResult.getChange();
@@ -244,10 +248,10 @@ public class Step05ClassTest extends PlainTestCase {
         int handedMoney = 30000;
         TicketBuyResult buyResult = booth.buyNightOnlyTwoDayPassport(handedMoney);
         Ticket nightOnlyTwoDayPassport = buyResult.getTicket();
-        nightOnlyTwoDayPassport.doInPark("noon");
+        nightOnlyTwoDayPassport.doInPark();
         log(nightOnlyTwoDayPassport.isFullyUsed());
         for (int i = 0; i < 2; i++) {
-            nightOnlyTwoDayPassport.doInPark("night");
+            nightOnlyTwoDayPassport.doInPark();
             log(nightOnlyTwoDayPassport.isFullyUsed());
         }
         int charge = buyResult.getChange();

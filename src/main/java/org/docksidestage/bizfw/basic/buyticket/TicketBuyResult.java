@@ -23,18 +23,18 @@ public class TicketBuyResult {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    // TODO takamiya ticket変数にticketという説明は冗長なので..."購入されたチケット (NotNull)" とか by jflute (2026/10/13)
-    private final Ticket ticket; // ticket
-    // TODO takamiya コメントがboolean仕様になってて、どこかからコピーされてきた？ by jflute (2026/10/13)
-    // TODO takamiya チャージになってる。でもgetterは正しくchangeに by jflute (2026/10/13)
-    private final int charge; // true means this ticket is unavailable
+    // done takamiya ticket変数にticketという説明は冗長なので..."購入されたチケット (NotNull)" とか by jflute (2026/10/13)
+    private final Ticket ticket; // 購入されたチケット (NotNull)
+    // done takamiya コメントがboolean仕様になってて、どこかからコピーされてきた？ by jflute (2026/10/13)
+    // done takamiya チャージになってる。でもgetterは正しくchangeに by jflute (2026/10/13)
+    private final int change; // 購入時のおつり (NotNull)
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public TicketBuyResult(Ticket ticket, int charge) {
+    public TicketBuyResult(Ticket ticket, int handedMoney) {
         this.ticket = ticket;
-        this.charge = charge;
+        this.change = handedMoney - ticket.getDisplayPrice();
     }
 
     // ===================================================================================
@@ -45,6 +45,6 @@ public class TicketBuyResult {
     }
 
     public int getChange() {
-        return charge;
+        return change;
     }
 }
