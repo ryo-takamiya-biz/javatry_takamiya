@@ -79,6 +79,7 @@ public class Ticket {
         return allowedEntryTimeType;
     }
 
+    // #1on1: isAlreadyIn()はOneDayのみ時代はよかったけど、今は曖昧なので、これでGood (2026/10/28)
     public boolean isFullyUsed() {
         return entryCount == maxEntryCount;
     }

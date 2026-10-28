@@ -204,6 +204,9 @@ public class Step05ClassTest extends PlainTestCase {
         // $nightOnlyの方は意図してなかった。
         // 新しい仕様追加によって、今までうまくいってた判定が、曖昧になってしまう。
         // done takamiya nightOnlyは省いて判定できるようにしましょう by jflute (2026/10/13)
+        // #1on1: $TicketからTicketTypeがまだ取れないのでいったんALL_DAY追加で... (2026/10/28)
+        // $ただ将来、微妙な違いのtwoDayが出てきた時に判定が曖昧になるので理想的にはTicketType。
+        // TODO takamiya TicketTypeによる判定をやってみてください by jflute (2026/10/28)
         if (ticket.getMaxEntryCount() == 2 && ticket.getAllowedEntryTimeType() == TicketBooth.AllowedEntryTimeType.ALL_DAY) { // write determination for two-day passport
             log("two-day passport");
         } else {

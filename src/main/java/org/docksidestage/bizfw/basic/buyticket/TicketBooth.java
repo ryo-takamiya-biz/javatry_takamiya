@@ -16,6 +16,12 @@
 package org.docksidestage.bizfw.basic.buyticket;
 import java.time.LocalTime;
 
+// #1on1: 要件定義のお話、事業会社のジレンマ (2026/10/28)
+// $まさしく要件定義苦しんでる、学びはあるので大変だけどまあためになる。
+// jflute感想:
+// o 業務の全体がわかるようになってくると、実装の立ち位置がわかるようになって楽しくなる。
+// o 生活プライベートでも要件定義力が活躍する
+
 // done takamiya javadocにauthorの追加をお願いします by jflute (2026/10/13)
 /**
  * @author jflute
@@ -33,6 +39,7 @@ public class TicketBooth {
     // done takamiya コピペミスっぽい、正しい仕様の7400を設定しましょう by jflute (2026/10/13)
     // private static final int NIGHT_ONLY_TWO_DAY_PRICE = 7400;
     public enum TicketType {
+        // #1on1: enumは、インスタンスの存在そのものがユニークキー (2026/10/28)
         ONE_DAY(7400, 1, AllowedEntryTimeType.ALL_DAY),
         TWO_DAY(13200, 2, AllowedEntryTimeType.ALL_DAY),
         FOUR_DAY(22400, 4, AllowedEntryTimeType.ALL_DAY),
@@ -56,6 +63,7 @@ public class TicketBooth {
     }
 
     public enum AllowedEntryTimeType {
+        // #1on1: minutesのこと考えたら、最初からLocalTimeでGood (2026/10/28)
         ALL_DAY(LocalTime.of(9, 0), LocalTime.of(21, 0)),
         MORNING(LocalTime.of(9, 0), LocalTime.of(12, 0)),
         AFTERNOON(LocalTime.of(12, 0), LocalTime.of(17, 0)),
@@ -151,6 +159,21 @@ public class TicketBooth {
         fourDayQuantity = doBuyPassport(handedMoney, fourDayQuantity, TicketType.FOUR_DAY);
         return new TicketBuyResult(new Ticket(TicketType.FOUR_DAY), handedMoney);
     }
+    // #1on1: $関数で切り出す時の基準は？ (見方を変えれば1行だけ) (2026/10/28)
+    // 基本: コードの見た目が同じだからというよりかは、意味が同じだから切り出す
+    //      (意味が同じであれば、一つのケースだけちょっと変わるみたいな確率が低い)
+    //      (追記: コードの見た目が同じで意味が違うケース、業務仕様の整理整頓がうまくいってないことが要因の一つでも)
+    // 応用: 行数よりも意味の存在感で切り出し判断
+    //      (オブジェクト指向的な面でもオーバーライドしたくなりやすいかどうか)
+    //      (特に重要オブジェクトをnewしているところ、newの先のコードの行数があると考えても良い)
+    //
+    // $現実の仕様と当てはめて実装の粒度も表現できたら...
+    // → yes, 最高。それが自然と拡張のしやすいコードにもなると思う
+    //   一方で、現実の業務仕様がしっかり整理整頓されてることが前提
+    //
+    // LastaFluteのbeforeFire()のaskBeginTime()を例にコードリーディング。
+    //
+    // TODO takamiya "return new TicketBuyResult" のところ、メソッド化してみてください by jflute (2026/10/28)
 
     /**
      * 夜用2Dayパスポートを買う、パークゲスト用のメソッド。
