@@ -82,7 +82,7 @@ public class TicketBooth {
         public LocalTime getEndTime() { return endTime; }
 
         public boolean isAllowedEntry(LocalTime currentTime) {
-            return !currentTime.isAfter(startTime) && currentTime.isAfter(endTime);
+            return !currentTime.isBefore(startTime) && currentTime.isBefore(endTime);
         }
     }
 
@@ -129,7 +129,7 @@ public class TicketBooth {
         // せめて、static final な定数にしましょう。スペルミスによる間違いも防ぎたいし、
         // リファクタリングでallDay, nightの中身の文字列を直す時も、何ヶ所も修正しなくても済むように。
         oneDayQuantity = doBuyPassport(handedMoney, oneDayQuantity, TicketType.ONE_DAY);
-        return new TicketBuyResult(new Ticket(TicketType.ONE_DAY), handedMoney);
+        return createTicketBuyResult(TicketType.ONE_DAY, handedMoney);
     }
 
     // #1on1: twoDay以降もJavaDocが入っていてGood (2026/10/13)
@@ -145,7 +145,7 @@ public class TicketBooth {
     public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
         // done takamiya TicketBuyResultの行も、再利用をどうにかしたいところ by jflute (2026/10/13)
         twoDayQuantity = doBuyPassport(handedMoney, twoDayQuantity, TicketType.TWO_DAY);
-        return new TicketBuyResult(new Ticket(TicketType.TWO_DAY), handedMoney);
+        return createTicketBuyResult(TicketType.TWO_DAY, handedMoney);
     }
 
     /**
@@ -157,7 +157,7 @@ public class TicketBooth {
      */
     public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
         fourDayQuantity = doBuyPassport(handedMoney, fourDayQuantity, TicketType.FOUR_DAY);
-        return new TicketBuyResult(new Ticket(TicketType.FOUR_DAY), handedMoney);
+        return createTicketBuyResult(TicketType.FOUR_DAY, handedMoney);
     }
     // #1on1: $関数で切り出す時の基準は？ (見方を変えれば1行だけ) (2026/10/28)
     // 基本: コードの見た目が同じだからというよりかは、意味が同じだから切り出す
@@ -173,7 +173,7 @@ public class TicketBooth {
     //
     // LastaFluteのbeforeFire()のaskBeginTime()を例にコードリーディング。
     //
-    // TODO takamiya "return new TicketBuyResult" のところ、メソッド化してみてください by jflute (2026/10/28)
+    // TODO done takamiya "return new TicketBuyResult" のところ、メソッド化してみてください by jflute (2026/10/28)
 
     /**
      * 夜用2Dayパスポートを買う、パークゲスト用のメソッド。
@@ -184,7 +184,11 @@ public class TicketBooth {
      */
     public TicketBuyResult buyNightOnlyTwoDayPassport(Integer handedMoney) {
         nightOnlyTwoDayQuantity = doBuyPassport(handedMoney, nightOnlyTwoDayQuantity, TicketType.NIGHT_ONLY_TWO_DAY);
-        return new TicketBuyResult(new Ticket(TicketType.NIGHT_ONLY_TWO_DAY), handedMoney);
+        return createTicketBuyResult(TicketType.NIGHT_ONLY_TWO_DAY, handedMoney);
+    }
+
+    private TicketBuyResult createTicketBuyResult(TicketType ticketType, Integer handedMoney) {
+        return new TicketBuyResult(new Ticket(ticketType), handedMoney);
     }
 
     // done takamiya publicのbuyとprivateのbuyを区別するテクニック by jflute (2026/10/13)

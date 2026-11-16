@@ -28,6 +28,7 @@ public class Ticket {
     // #1on1: "入場可能な回数", "入場した回数" の横のコメントGood (2026/10/13)
     // "入場可能な回数" という概念、現在の入場可能な回数なのか？そのチケット種別で入れるMAX回数なのか？
     // done takamiya なので、"入場可能な回数" は、もうちょいしっかり固定値な日数であることがわかるような概念名を付けよう by jflute (2026/10/13)
+    private final TicketBooth.TicketType ticketType;
     private final int displayPrice; // written on ticket, park guest can watch this
     private final int maxEntryCount; // 入場可能な最大回数
     private int entryCount = 0; // 入場した回数
@@ -37,6 +38,7 @@ public class Ticket {
     //                                                                         Constructor
     //                                                                         ===========
     public Ticket(TicketBooth.TicketType ticketType) {
+        this.ticketType = ticketType;
         this.displayPrice = ticketType.getPrice();
         this.maxEntryCount = ticketType.getMaxEntryCount();
         this.allowedEntryTimeType = ticketType.getAllowedEntryTimeType();
@@ -46,8 +48,9 @@ public class Ticket {
     //                                                                             In Park
     //                                                                             =======
     // done takamiya 引数名、「入園の時間帯」つまり実質「今の時間帯」なので、何かしらそのニュアンスの名前が欲しい by jflute (2026/10/13)
-    // TODO takamiya 修行++: 呼び出し側が時間帯を入れると呼び出し側で細工ができて予期せぬ挙動も許してしまう。 by jflute (2026/10/13)
+    // TODO done takamiya 修行++: 呼び出し側が時間帯を入れると呼び出し側で細工ができて予期せぬ挙動も許してしまう。 by jflute (2026/10/13)
     // 時間をdoInPark()側で取得できるようにしたが、関数呼び出し側から時間を固定する方法はわからなかった
+    // currentTime()に時刻取得を切り出し、テストではオーバーライドして時刻を固定できるようにした。
     // なので、「入園の時間帯」は doInPark() 内で導出して、判定するようにしたいところ。
     // ただ、テストのときは「入園の時間帯」を細工して動作確認したいので、そことトレードオフになっちゃう。
     // そのトレードオフをどうにかして回避したいところだが、難易度が高いので修行++扱い。
@@ -55,7 +58,7 @@ public class Ticket {
         if (entryCount == maxEntryCount) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         }
-        if (!allowedEntryTimeType.isAllowedEntry(LocalTime.now())) {
+        if (!allowedEntryTimeType.isAllowedEntry(currentTime())) {
             // #1on1: いいね、例外メッセージに allowedEntryTime を入れてデバッグ用の情報を出力している (2026/10/13)
             // jfluteだったら、もうentryTimeも両方出しちゃう。(step7とかでも話する予定)
             throw new IllegalStateException("Entry is not allowed at this time=" +
@@ -64,9 +67,17 @@ public class Ticket {
         ++entryCount;
     }
 
+    protected LocalTime currentTime() {
+        return LocalTime.now();
+    }
+
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
+    public TicketBooth.TicketType getTicketType() {
+        return ticketType;
+    }
+
     public int getDisplayPrice() {
         return displayPrice;
     }

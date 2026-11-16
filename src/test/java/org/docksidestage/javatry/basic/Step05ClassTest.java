@@ -15,6 +15,8 @@
  */
 package org.docksidestage.javatry.basic;
 
+import java.time.LocalTime;
+
 import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth.TicketShortMoneyException;
@@ -206,8 +208,8 @@ public class Step05ClassTest extends PlainTestCase {
         // done takamiya nightOnlyは省いて判定できるようにしましょう by jflute (2026/10/13)
         // #1on1: $TicketからTicketTypeがまだ取れないのでいったんALL_DAY追加で... (2026/10/28)
         // $ただ将来、微妙な違いのtwoDayが出てきた時に判定が曖昧になるので理想的にはTicketType。
-        // TODO takamiya TicketTypeによる判定をやってみてください by jflute (2026/10/28)
-        if (ticket.getMaxEntryCount() == 2 && ticket.getAllowedEntryTimeType() == TicketBooth.AllowedEntryTimeType.ALL_DAY) { // write determination for two-day passport
+        // TODO done takamiya TicketTypeによる判定をやってみてください by jflute (2026/10/28)
+        if (ticket.getTicketType() == TicketBooth.TicketType.TWO_DAY) {
             log("two-day passport");
         } else {
             log("other");
@@ -250,9 +252,17 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         int handedMoney = 30000;
         TicketBuyResult buyResult = booth.buyNightOnlyTwoDayPassport(handedMoney);
-        Ticket nightOnlyTwoDayPassport = buyResult.getTicket();
+        LocalTime[] entryTime = { LocalTime.of(16, 59) };
+        Ticket nightOnlyTwoDayPassport = new Ticket(buyResult.getTicket().getTicketType()) {
+            @Override
+            protected LocalTime currentTime() {
+                return entryTime[0];
+            }
+        };
         nightOnlyTwoDayPassport.doInPark();
         log(nightOnlyTwoDayPassport.isFullyUsed());
+
+        entryTime[0] = LocalTime.of(18, 0);
         for (int i = 0; i < 2; i++) {
             nightOnlyTwoDayPassport.doInPark();
             log(nightOnlyTwoDayPassport.isFullyUsed());
