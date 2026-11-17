@@ -28,6 +28,11 @@ public class Ticket {
     // #1on1: "入場可能な回数", "入場した回数" の横のコメントGood (2026/10/13)
     // "入場可能な回数" という概念、現在の入場可能な回数なのか？そのチケット種別で入れるMAX回数なのか？
     // done takamiya なので、"入場可能な回数" は、もうちょいしっかり固定値な日数であることがわかるような概念名を付けよう by jflute (2026/10/13)
+    // #1on1: $ticketType持つようになったので、displayPriceとか持たなくていいかな？ (2026/11/17)
+    // 持っちゃいけないわけじゃないけど、持たないのがデフォルト感覚。
+    // 強調しておきたい重要人物とかだったら、こっちらで明示的に保持しておくとかあるかも。
+    // 何度も使うから、単純に変数切り出しみたいな感じで、持っておくとか。
+    // TODO takamiya 自分の思うがままに調整してみてください。 by jflute (2026/11/17)
     private final TicketBooth.TicketType ticketType;
     private final int displayPrice; // written on ticket, park guest can watch this
     private final int maxEntryCount; // 入場可能な最大回数
@@ -48,7 +53,7 @@ public class Ticket {
     //                                                                             In Park
     //                                                                             =======
     // done takamiya 引数名、「入園の時間帯」つまり実質「今の時間帯」なので、何かしらそのニュアンスの名前が欲しい by jflute (2026/10/13)
-    // TODO done takamiya 修行++: 呼び出し側が時間帯を入れると呼び出し側で細工ができて予期せぬ挙動も許してしまう。 by jflute (2026/10/13)
+    // done takamiya 修行++: 呼び出し側が時間帯を入れると呼び出し側で細工ができて予期せぬ挙動も許してしまう。 by jflute (2026/10/13)
     // 時間をdoInPark()側で取得できるようにしたが、関数呼び出し側から時間を固定する方法はわからなかった
     // currentTime()に時刻取得を切り出し、テストではオーバーライドして時刻を固定できるようにした。
     // なので、「入園の時間帯」は doInPark() 内で導出して、判定するようにしたいところ。

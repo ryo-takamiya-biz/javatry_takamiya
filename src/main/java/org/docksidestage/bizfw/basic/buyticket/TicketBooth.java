@@ -38,6 +38,7 @@ public class TicketBooth {
     // private static final int FOUR_DAY_PRICE = 22400;
     // done takamiya コピペミスっぽい、正しい仕様の7400を設定しましょう by jflute (2026/10/13)
     // private static final int NIGHT_ONLY_TWO_DAY_PRICE = 7400;
+    // TODO takamiya けっこうな重要人物なので、ファイル独立して、使いやすく、見つけやすくしましょう by jflute (2026/11/17)
     public enum TicketType {
         // #1on1: enumは、インスタンスの存在そのものがユニークキー (2026/10/28)
         ONE_DAY(7400, 1, AllowedEntryTimeType.ALL_DAY),
@@ -70,7 +71,9 @@ public class TicketBooth {
         NIGHT(LocalTime.of(17, 0), LocalTime.of(21, 0));
 
         private final LocalTime startTime;
-        private final LocalTime endTime;
+        private final LocalTime endTime; // この時間ぴったりはもう入れない by jflute
+        // #1on1: endはブレやすいので、endを表現するときは含む/含まないをコメントで書いておきたい (2026/11/17)
+        // e.g. VALID_END_DATE の例。
 
         AllowedEntryTimeType (LocalTime startTime, LocalTime endTime) {
             this.startTime = startTime;
@@ -82,6 +85,12 @@ public class TicketBooth {
         public LocalTime getEndTime() { return endTime; }
 
         public boolean isAllowedEntry(LocalTime currentTime) {
+            // #1on1: いいね、判定を逆転させたことで、しっかり17時ぴったりが含まれるのでGood (2026/11/17)
+            // #1on1: いいね、時間帯を検査するロジックがここにあるのGood (2026/11/17)
+            // LocalTime.isEqual()ないの発見話。
+            // isEqual()とequal()のニュアンスの違い。
+            // isBefore()/isAfter()だけで、含むメソッドが用意されていない話。
+            // DBだと、GreaterThan/GreaterEqual で含むthanを表現したりしている。
             return !currentTime.isBefore(startTime) && currentTime.isBefore(endTime);
         }
     }
@@ -117,6 +126,7 @@ public class TicketBooth {
     // * @throws TicketShortMoneyException 買うのに金額が足りなかったら
     // */
     // done takamiya $returnになってる。@returnが正しい。 by jflute (2026/10/13)
+    // TODO takamiya @returnがもうチケットクラスじゃなくてresult by jflute (2026/11/17)
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -128,6 +138,8 @@ public class TicketBooth {
         // done takamiya "allDay", "night" はハードコードの文字列ではなく... by jflute (2026/10/13)
         // せめて、static final な定数にしましょう。スペルミスによる間違いも防ぎたいし、
         // リファクタリングでallDay, nightの中身の文字列を直す時も、何ヶ所も修正しなくても済むように。
+        // TODO takamiya TicketType.ONE_DAYのところは変数に出してONE_DAYが一箇所になるようにしてみましょう by jflute (2026/11/17)
+        // TODO takamiya 修行++: oneDayQuantity の登場が一回で済むようにしたい by jflute (2026/11/17)
         oneDayQuantity = doBuyPassport(handedMoney, oneDayQuantity, TicketType.ONE_DAY);
         return createTicketBuyResult(TicketType.ONE_DAY, handedMoney);
     }
@@ -173,7 +185,7 @@ public class TicketBooth {
     //
     // LastaFluteのbeforeFire()のaskBeginTime()を例にコードリーディング。
     //
-    // TODO done takamiya "return new TicketBuyResult" のところ、メソッド化してみてください by jflute (2026/10/28)
+    // done takamiya "return new TicketBuyResult" のところ、メソッド化してみてください by jflute (2026/10/28)
 
     /**
      * 夜用2Dayパスポートを買う、パークゲスト用のメソッド。
@@ -187,6 +199,7 @@ public class TicketBooth {
         return createTicketBuyResult(TicketType.NIGHT_ONLY_TWO_DAY, handedMoney);
     }
 
+    // TODO takamiya createResultはdoBuyの下に持っていきましょう by jflute (2026/11/17)
     private TicketBuyResult createTicketBuyResult(TicketType ticketType, Integer handedMoney) {
         return new TicketBuyResult(new Ticket(ticketType), handedMoney);
     }

@@ -89,6 +89,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         }
         alreadyIn = true;
 
+        // TODO jflute 次回1on1で、オブジェクトの重要性と間違えない話 (2026/11/17)
         //
         // [final process]
         //

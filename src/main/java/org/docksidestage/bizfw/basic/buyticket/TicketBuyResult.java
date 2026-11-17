@@ -33,6 +33,14 @@ public class TicketBuyResult {
     //                                                                         Constructor
     //                                                                         ===========
     public TicketBuyResult(Ticket ticket, int handedMoney) {
+        // TODO takamiya お釣りの計算は、ここじゃなくてTicketBoothが無難かなと by jflute (2026/11/17)
+        // お釣りの計算もれっきとしたビジネスロジックなので、もうちょい目立たせたい。
+        // 目立たない理由:
+        // o Constructorでロジックは入れない慣習がある (読み手がConstructorにあるって思わない)
+        // o Resultという概念でロジックは入れない慣習がある (同上)
+        //  i Resultという言葉から入れ物クラス感が強い
+        //  i これがResultCreatorとかResultProviderって名前だったらアリ
+        // (もしgetで計算している場合のとぅどぅシミュレーション)
         this.ticket = ticket;
         this.change = handedMoney - ticket.getDisplayPrice();
     }

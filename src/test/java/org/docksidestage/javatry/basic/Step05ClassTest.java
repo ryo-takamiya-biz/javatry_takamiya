@@ -208,7 +208,7 @@ public class Step05ClassTest extends PlainTestCase {
         // done takamiya nightOnlyは省いて判定できるようにしましょう by jflute (2026/10/13)
         // #1on1: $TicketからTicketTypeがまだ取れないのでいったんALL_DAY追加で... (2026/10/28)
         // $ただ将来、微妙な違いのtwoDayが出てきた時に判定が曖昧になるので理想的にはTicketType。
-        // TODO done takamiya TicketTypeによる判定をやってみてください by jflute (2026/10/28)
+        // done takamiya TicketTypeによる判定をやってみてください by jflute (2026/10/28)
         if (ticket.getTicketType() == TicketBooth.TicketType.TWO_DAY) {
             log("two-day passport");
         } else {
@@ -253,6 +253,7 @@ public class Step05ClassTest extends PlainTestCase {
         int handedMoney = 30000;
         TicketBuyResult buyResult = booth.buyNightOnlyTwoDayPassport(handedMoney);
         LocalTime[] entryTime = { LocalTime.of(16, 59) };
+        // #1on1: いいね、パーフェクト、原始的なmockのやり方しっかりできてる (2026/11/17)
         Ticket nightOnlyTwoDayPassport = new Ticket(buyResult.getTicket().getTicketType()) {
             @Override
             protected LocalTime currentTime() {
@@ -280,8 +281,10 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_yourRefactoring() {
         // your confirmation code here
+        // #1on1: 一緒にコード見てリファクタリング箇所はとぅどぅにした (2026/11/17)
     }
 
+    // TODO jflute 次回1on1ここから (2026/11/17)
     /**
      * Write intelligent JavaDoc comments seriously on the public classes/constructors/methods of the Ticket class. <br>
      * (Ticketクラスのpublicなクラス/コンストラクター/メソッドに、気の利いたJavaDocコメントを本気で書いてみましょう) <br>
